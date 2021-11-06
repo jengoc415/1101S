@@ -57,11 +57,11 @@ function find_gene_start(xs) {
         return null;
     }
 
-    let curr = list_ref(xs, 0);
-    let second = list_ref(xs, 1);
-    let third = list_ref(xs, 2);
+    let found = list_ref(xs, 0) === "A" &&
+                list_ref(xs, 1) === "T" &&
+                list_ref(xs, 2) === "G";
 
-    if (curr === "A" && second === "T" && third === "G") {
+    if (found) {
         return is_null(tail(tail(tail(xs))))
             ? list(null)
             : tail(tail(tail(xs)));
@@ -71,19 +71,53 @@ function find_gene_start(xs) {
 
 }
 
-/*
+
 
 ////////////////////////////////////////////////////////////
 // Question 1F
 ////////////////////////////////////////////////////////////
 
 function find_gene_end(xs) {
-
-    // WRITE HERE.
-
+    if (is_null(xs) || length(xs) < 3) {
+        return null;
+    }
+    
+    function check_end(ys) {
+        let curr = list_ref(xs, 0);
+        let second = list_ref(xs, 1);
+        let third = list_ref(xs, 2);
+        
+        let found = (curr === "T" && 
+                    second === "A" &&
+                    third === "G") 
+                        ||
+                    (curr === "T" && 
+                    second === "A" &&
+                    third === "A") 
+                        ||
+                    (curr === "T" && 
+                    second === "G" &&
+                    third === "A");
+        if (found) {
+            return length(ys) === 3
+                ? list(null)
+                : ys;
+        } else {
+            return pair(head(ys), check_end(tail(ys)));
+        }
+    }
+    
+    return check_end(xs);
 }
 
+find_gene_end(list("A", "T", "A", "C", "T", "A", "G", "A", "T", "A", "A"));
 
+find_gene_end(list("T", "G", "A", "A", "T", "A", "C"));
+
+find_gene_end(list("A", "T", "A", "C", "C", "A", "G",
+                   "A", "T"));
+
+/*
 
 ////////////////////////////////////////////////////////////
 // Question 1G
