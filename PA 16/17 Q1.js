@@ -47,20 +47,31 @@ function oxoguanine_repair(xs) {
     return map(replace_g, xs);
 }
 
-display(oxoguanine_repair(
-           list("A", "8", "A", "8", "C", "T", "A", "C")));
-
 ////////////////////////////////////////////////////////////
 // Question 1E
 ////////////////////////////////////////////////////////////
 
 function find_gene_start(xs) {
+    
+    if (length(xs) < 3) {
+        return null;
+    }
 
-    // WRITE HERE.
+    let curr = list_ref(xs, 0);
+    let second = list_ref(xs, 1);
+    let third = list_ref(xs, 2);
+
+    if (curr === "A" && second === "T" && third === "G") {
+        return is_null(tail(tail(tail(xs))))
+            ? list(null)
+            : tail(tail(tail(xs)));
+    } else {
+        return find_gene_start(tail(xs));
+    }
 
 }
 
-
+/*
 
 ////////////////////////////////////////////////////////////
 // Question 1F
@@ -554,3 +565,4 @@ assert(
     ['all_genes']
 );
 
+*/
