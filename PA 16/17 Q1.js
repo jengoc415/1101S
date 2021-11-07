@@ -20,7 +20,7 @@ function is_nucleobase(s) {
 
 function is_dna_strand(xs) {
     return is_null(xs)
-        ? null
+        ? true
         : length(filter(is_nucleobase, xs)) === length(xs);
 }
 
@@ -62,9 +62,7 @@ function find_gene_start(xs) {
                 list_ref(xs, 2) === "G";
 
     if (found) {
-        return is_null(tail(tail(tail(xs))))
-            ? list(null)
-            : tail(tail(tail(xs)));
+        return list(tail(tail(tail(xs))));
     } else {
         return find_gene_start(tail(xs));
     }
@@ -119,7 +117,7 @@ function find_gene_end(xs) {
     } else if (position_found === length(xs)) {
         return null;
     } else {
-        return build_list(x => list_ref(xs, x), position_found);
+        return list(build_list(x => list_ref(xs, x), position_found));
     }
     
     
@@ -138,8 +136,6 @@ function all_genes(xs) {
     
     return pair(find_gene_end(temp), all_genes(temp));
 }
-
-/*
 
 
 ////////////////////////////////////////////////////////////
@@ -609,5 +605,3 @@ assert(
     "Q1G-P03",
     ['all_genes']
 );
-
-*/
