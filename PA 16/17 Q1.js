@@ -130,16 +130,17 @@ function find_gene_end(xs) {
 ////////////////////////////////////////////////////////////
 
 function all_genes(xs) {
-    if (is_null(xs)) {
+    let temp = find_gene_start(xs);
+
+    if (is_null(temp)) {
         return null;
     }
-    let temp = find_gene_start(xs);
-    let wish = all_genes(find_gene_start(xs));
-    return pair(find_gene_end(temp), wish);
+    
+    return pair(find_gene_end(temp), all_genes(temp));
 }
 
-display_list(all_genes(list("T", "A", "T", "G", "C", "A", "T", "A", "A", "G", "T", "A", "G", "A",
-"T", "G", "A", "T", "G", "A", "T")));
+
+// display_list(pair(list("C", "A"), pair(list("A"), null)));
 /*
 
 
