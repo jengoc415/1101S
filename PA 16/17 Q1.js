@@ -139,8 +139,6 @@ function all_genes(xs) {
     return pair(find_gene_end(temp), all_genes(temp));
 }
 
-
-// display_list(pair(list("C", "A"), pair(list("A"), null)));
 /*
 
 
