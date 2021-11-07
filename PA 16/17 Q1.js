@@ -82,10 +82,15 @@ function find_gene_end(xs) {
         return null;
     }
     
-    function check_end(ys) {
-        let curr = list_ref(xs, 0);
-        let second = list_ref(xs, 1);
-        let third = list_ref(xs, 2);
+    let position_found = 0;
+    
+    function check_end_position(ys) {
+        if (length(ys) < 3) {
+            return position_found + 2;
+        }
+        let curr = list_ref(ys, 0);
+        let second = list_ref(ys, 1);
+        let third = list_ref(ys, 2);
         
         let found = (curr === "T" && 
                     second === "A" &&
@@ -98,24 +103,34 @@ function find_gene_end(xs) {
                     (curr === "T" && 
                     second === "G" &&
                     third === "A");
+                    
         if (found) {
-            return length(ys) === 3
-                ? list(null)
-                : ys;
+            return position_found;
         } else {
-            return pair(head(ys), check_end(tail(ys)));
+            position_found = position_found + 1;
+            return check_end_position(tail(ys));
         }
     }
     
-    return check_end(xs);
+    check_end_position(xs);
+    
+    if (position_found === 0) {
+        return list(null);
+    } else if (position_found === length(xs)) {
+        return null;
+    } else {
+        return build_list(x => list_ref(xs, x), position_found);
+    }
+    
+    
 }
 
-find_gene_end(list("A", "T", "A", "C", "T", "A", "G", "A", "T", "A", "A"));
+display_list(
+    find_gene_end(list("T", "G", "A", "A", "T", "A", "C")));
 
-find_gene_end(list("T", "G", "A", "A", "T", "A", "C"));
+// find_gene_end(list("));
 
-find_gene_end(list("A", "T", "A", "C", "C", "A", "G",
-                   "A", "T"));
+// find_gene_end(list("A", "T", "A", "C", "C", "A", "G", "A", "T"));
 
 /*
 
