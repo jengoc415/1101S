@@ -86,8 +86,10 @@ function find_gene_end(xs) {
     
     function check_end_position(ys) {
         if (length(ys) < 3) {
-            return position_found + 2;
+            position_found = position_found + 2;
+            return position_found;
         }
+        
         let curr = list_ref(ys, 0);
         let second = list_ref(ys, 1);
         let third = list_ref(ys, 2);
@@ -113,7 +115,7 @@ function find_gene_end(xs) {
     }
     
     check_end_position(xs);
-    
+
     if (position_found === 0) {
         return list(null);
     } else if (position_found === length(xs)) {
@@ -124,15 +126,6 @@ function find_gene_end(xs) {
     
     
 }
-
-display_list(
-    find_gene_end(list("T", "G", "A", "A", "T", "A", "C")));
-
-// find_gene_end(list("));
-
-// find_gene_end(list("A", "T", "A", "C", "C", "A", "G", "A", "T"));
-
-/*
 
 ////////////////////////////////////////////////////////////
 // Question 1G
