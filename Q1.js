@@ -1,33 +1,3 @@
-Skip to content
-Search or jump to…
-Pull requests
-Issues
-Marketplace
-Explore
- 
-@jengoc415 
-jengoc415
-/
-1101S
-Private
-1
-00
-Code
-Issues
-Pull requests
-Actions
-Projects
-Security
-Insights
-Settings
-1101S/PA 16/17 Q1.js /
-
-Source Academy User Changes made from Source Academy
-Latest commit b27a08e 16 hours ago
- History
- 0 contributors
-614 lines (509 sloc)  13.7 KB
-   
 // Instructions for students who are using this for practice:
 //
 // (1) Copy and paste this entire file into the editor of Source Academy
