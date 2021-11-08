@@ -1,3 +1,33 @@
+Skip to content
+Search or jump to…
+Pull requests
+Issues
+Marketplace
+Explore
+ 
+@jengoc415 
+jengoc415
+/
+1101S
+Private
+1
+00
+Code
+Issues
+Pull requests
+Actions
+Projects
+Security
+Insights
+Settings
+1101S/PA 16/17 Q1.js /
+
+Source Academy User Changes made from Source Academy
+Latest commit b27a08e 16 hours ago
+ History
+ 0 contributors
+614 lines (509 sloc)  13.7 KB
+   
 // Instructions for students who are using this for practice:
 //
 // (1) Copy and paste this entire file into the editor of Source Academy
@@ -7,107 +37,146 @@
 
 
 ////////////////////////////////////////////////////////////
-// Question 2A
+// Question 1A
 ////////////////////////////////////////////////////////////
 
-function all_different(nums) {
+function is_nucleobase(s) {
+    return s === "A" || s === "G" || s === "C" || s === "T";
+}
 
-    let arr = [];
-    let duplicate_found = false;
-    
-    function traverse(xs) {
-        if (is_null(xs)) {
-            return null;
-        } else if (arr[head(xs)] !== undefined) {
-            duplicate_found = true;
-        } else {
-            arr[head(xs)] = head(xs);
-            traverse(tail(xs));
-        }
-    }
-    traverse(nums);
-    return !duplicate_found;
+////////////////////////////////////////////////////////////
+// Question 1B
+////////////////////////////////////////////////////////////
+
+function is_dna_strand(xs) {
+    return is_null(xs)
+        ? true
+        : length(filter(is_nucleobase, xs)) === length(xs);
 }
 
 
 ////////////////////////////////////////////////////////////
-// Question 2B
+// Question 1C
 ////////////////////////////////////////////////////////////
 
-function is_valid_toto_set(nums, n, min, max) {
-    let local_min = 999999;
-    let local_max = 0;
+function combine(xss) {
+   return accumulate(append, null, xss);
+}
+
+////////////////////////////////////////////////////////////
+// Question 1D
+////////////////////////////////////////////////////////////
+
+function oxoguanine_repair(xs) {
     
-    function check(xs) {
-        if (is_null(xs)) {
-            return null;
-        } else {
-            local_min = math_min(head(xs), local_min);
-            local_max = math_max(head(xs), local_max);
-            return check(tail(xs));
-        }
+    function replace_g(s) {
+        return s === "8"
+            ? "G"
+            : s;
+    }
+    return map(replace_g, xs);
+}
+
+////////////////////////////////////////////////////////////
+// Question 1E
+////////////////////////////////////////////////////////////
+
+function find_gene_start(xs) {
+    
+    if (length(xs) < 3) {
+        return null;
+    }
+
+    let found = list_ref(xs, 0) === "A" &&
+                list_ref(xs, 1) === "T" &&
+                list_ref(xs, 2) === "G";
+
+    if (found) {
+        return list(tail(tail(tail(xs))));
+    } else {
+        return find_gene_start(tail(xs));
+    }
+
+}
+
+////////////////////////////////////////////////////////////
+// Question 1F
+////////////////////////////////////////////////////////////
+
+function find_gene_end(xs) {
+    if (is_null(xs) || length(xs) < 3) {
+        return null;
     }
     
-    check(nums);
-    return length(nums) === n && min === local_min && max === local_max && all_different(nums);
-}
+    let position_found = 0;
+    
+    function check_end_position(ys) {
+        if (length(ys) < 3) {
+            position_found = position_found + 2;
+            return position_found;
+        }
         
-////////////////////////////////////////////////////////////
-// Question 2C
-////////////////////////////////////////////////////////////
-
-function num_of_matches(numsA, numsB) {
-
-    let arr = [];
-    let matches = 0;
-    
-    function traverse(xs) {
-        if (is_null(xs)) {
-            return null;
-        } else if (arr[head(xs)] !== undefined) {
-            matches = matches + 1;
+        let curr = list_ref(ys, 0);
+        let second = list_ref(ys, 1);
+        let third = list_ref(ys, 2);
+        
+        let found = (curr === "T" && 
+                    second === "A" &&
+                    third === "G") 
+                        ||
+                    (curr === "T" && 
+                    second === "A" &&
+                    third === "A") 
+                        ||
+                    (curr === "T" && 
+                    second === "G" &&
+                    third === "A");
+                    
+        if (found) {
+            return position_found;
         } else {
-            arr[head(xs)] = head(xs);
+            position_found = position_found + 1;
+            return check_end_position(tail(ys));
         }
-        traverse(tail(xs));
     }
     
-    traverse(numsA);
-    traverse(numsB);
+    check_end_position(xs);
+
+    if (position_found === 0) {
+        return list(null);
+    } else if (position_found === length(xs)) {
+        return null;
+    } else {
+        return list(build_list(x => list_ref(xs, x), position_found));
+    }
     
-    return matches;
+    
 }
 
-
-
 ////////////////////////////////////////////////////////////
-// Question 2D
+// Question 1G
 ////////////////////////////////////////////////////////////
 
-function check_winning_group(bet_nums, draw_nums, extra_num) {
-    let matches = num_of_matches(bet_nums, draw_nums);
-    let n = length(draw_nums);
-    let match_extra = num_of_matches(bet_nums, list(extra_num));
+function all_genes(xs) {
+    
+    let temp = find_gene_start(xs);
+    display(temp);
+    display(find_gene_start(temp));
 
-    return matches === n
-        ? 1
-        : matches === n-1 && match_extra === 1
-        ? 2
-        : matches === n-1
-        ? 3
-        : matches === n-2 && match_extra === 1
-        ? 4
-        : matches === n-2
-        ? 5
-        : 0;
+    if (is_null(temp)) {
+        return null;
+    } else {
+        return append(temp, find_gene_start(temp));
+    }
+
 }
 
-
+display_list(all_genes(list("T", "A", "T", "G", "C", "A", "T", "A", "A", "G", "T", "A", "G", "A",
+"T", "G", "A", "T", "G", "A", "T")));
+/*
 ////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////
-
-
 //===========================================================
 // This function is provided for running the testcases
 // in the Source Academy Playground.
@@ -118,311 +187,400 @@ function assert(f, test_name, fnames) {
     display(test_name + ": " + (f() ? "PASS" : "FAIL"));
 }
 //===========================================================
-
-
-
 ////////////////////////////////////////////////////////////
-// Test Cases for Q2A
+// Test Cases for Q1A
 ////////////////////////////////////////////////////////////
-
 assert(
     () => {
-        const nums = list(23);
-        return equal(all_different(nums), true);
+        return equal(is_nucleobase("Mary"), false);
     },
-    "Q2A-T1",
-    ['all_different']
+    "Q1A-P01",
+    ['is_nucleobase']
 );
-
 assert(
     () => {
-        const nums = list(2, 5, 1, 6, 7, 4, 3);
-        return equal(all_different(nums), true);
+        return equal(is_nucleobase("T"), true);
     },
-    "Q2A-T2",
-    ['all_different']
+    "Q1A-P02",
+    ['is_nucleobase']
 );
-
 assert(
     () => {
-        const nums = list(2, 6, 1, 7, 6, 4, 3);
-        return equal(all_different(nums), false);
+        return equal(is_nucleobase("^^^"), false);
     },
-    "Q2A-T3",
-    ['all_different']
+    "Q1A-P03",
+    ['is_nucleobase']
 );
-
 assert(
     () => {
-        const nums = list(3, 2);
-        return equal(all_different(nums), true);
+        return equal(is_nucleobase("Mary"), false);
     },
-    "Q2A-T4",
-    ['all_different']
+    "Q1A-T01",
+    ['is_nucleobase']
 );
-
 assert(
     () => {
-        const nums = list(3, 2, 1, 9, 8);
-        return equal(all_different(nums), true);
+        return equal(is_nucleobase("G"), true);
     },
-    "Q2A-T5",
-    ['all_different']
+    "Q1A-T02",
+    ['is_nucleobase']
 );
-
 assert(
     () => {
-        const nums = list(2, 6, 3, 7, 6, 6, 3, 1);
-        return equal(all_different(nums), false);
+        return equal(is_nucleobase("A"), true);
     },
-    "Q2A-T6",
-    ['all_different']
+    "Q1A-T03",
+    ['is_nucleobase']
 );
-
-
-
+assert(
+    () => {
+        return equal(is_nucleobase("TAG"), false);
+    },
+    "Q1A-T04",
+    ['is_nucleobase']
+);
+assert(
+    () => {
+        return equal(is_nucleobase("C"), true);
+    },
+    "Q1A-T05",
+    ['is_nucleobase']
+);
 ////////////////////////////////////////////////////////////
-// Test Cases for Q2B
+// Test Cases for Q1B
 ////////////////////////////////////////////////////////////
-
 assert(
     () => {
-        const nums = list(5, 1, 8, 49);
-        const n = 6;
-        const min = 1;
-        const max = 49;
-        return equal(is_valid_toto_set(nums, n, min, max), false);
+        return equal(is_dna_strand(list("A", "G", "A")), true);
     },
-    "Q2B-T1",
-    ['is_valid_toto_set']
+    "Q1B-P01",
+    ['is_dna_strand']
 );
-
 assert(
     () => {
-        const nums = list(25, 13, 2, 31, 30, 3, 15);
-        const n = 7;
-        const min = 3;
-        const max = 30;
-        return equal(is_valid_toto_set(nums, n, min, max), false);
+        return equal(is_dna_strand(list("A", "B", "B", "A")), false);
     },
-    "Q2B-T2",
-    ['is_valid_toto_set']
+    "Q1B-P02",
+    ['is_dna_strand']
 );
-
 assert(
     () => {
-        const nums = list(25, 13, 8, 14, 30, 3, 8);
-        const n = 7;
-        const min = 3;
-        const max = 30;
-        return equal(is_valid_toto_set(nums, n, min, max), false);
+        return equal(is_dna_strand(list("T", "G", "C")), true);
     },
-    "Q2B-T3",
-    ['is_valid_toto_set']
+    "Q1B-P03",
+    ['is_dna_strand']
 );
-
 assert(
     () => {
-        const nums = list(25, 13, 8, 14, 30, 3, 15);
-        const n = 7;
-        const min = 3;
-        const max = 30;
-        return equal(is_valid_toto_set(nums, n, min, max), true);
+        return equal(is_dna_strand(list("T", "G", "Otto")), false);
     },
-    "Q2B-T4",
-    ['is_valid_toto_set']
+    "Q1B-P04",
+    ['is_dna_strand']
 );
-
 assert(
     () => {
-        const nums = list(40, 20, 30, 15, 10);
-        const n = 5;
-        const min = 10;
-        const max = 40;
-        return equal(is_valid_toto_set(nums, n, min, max), true);
+        return equal(is_dna_strand(list("T", "G", "C", "B")), false);
     },
-    "Q2B-T5",
-    ['is_valid_toto_set']
+    "Q1B-T01",
+    ['is_nucleobase']
 );
-
 assert(
     () => {
-        const nums = list(40, 20, 30, 15, 40);
-        const n = 5;
-        const min = 10;
-        const max = 40;
-        return equal(is_valid_toto_set(nums, n, min, max), false);
+        return equal(is_dna_strand(null), true);
     },
-    "Q2B-T6",
-    ['is_valid_toto_set']
+    "Q1B-T02",
+    ['is_nucleobase']
 );
-
-
-
+assert(
+    () => {
+        return equal(is_dna_strand(list("A", "A", "A")), true);
+    },
+    "Q1B-T03",
+    ['is_nucleobase']
+);
+assert(
+    () => {
+        return equal(is_dna_strand(list("_", "A", "T")), false);
+    },
+    "Q1B-T04",
+    ['is_nucleobase']
+);
+assert(
+    () => {
+        return equal(is_dna_strand(list("T", "G", "C", "TT")), false);
+    },
+    "Q1B-T05",
+    ['is_nucleobase']
+);
 ////////////////////////////////////////////////////////////
-// Test Cases for Q2C
+// Test Cases for Q1C
 ////////////////////////////////////////////////////////////
-
 assert(
     () => {
-        const numsA = list(23, 21, 30, 15, 40);
-        const numsB = list(3, 29, 40, 15, 20 );
-        return equal(num_of_matches(numsA, numsB), 2);
+        return equal(combine(list(list("A", "G", "A", "T", "A"),
+                                  list("A"),
+                                  list("G", "A", "G"))),
+                    list("A", "G", "A", "T", "A", "A", "G", "A", "G"));
     },
-    "Q2C-T1",
-    ['num_of_matches']
+    "Q1C-P01",
+    ['combine']
 );
-
 assert(
     () => {
-        const numsB = list(23, 21, 30, 15, 40);
-        const numsA = list(3, 29, 40, 15, 20);
-        return equal(num_of_matches(numsA, numsB), 2);
+        return equal(combine(list(list("G"),
+                                  list("G"),
+                                  list("C", "T", "C", "T"),
+                                  list("A"))),
+                     list("G", "G", "C", "T", "C", "T", "A"));
     },
-    "Q2C-T2",
-    ['num_of_matches']
+    "Q1C-P02",
+    ['combine']
 );
-
 assert(
     () => {
-        const numsA = list(23, 21, 30, 15, 40);
-        const numsB = list(31, 29, 41, 16, 20);
-        return equal(num_of_matches(numsA, numsB), 0);
+        return equal(combine(list(list("A", "A", "A"),
+                                  list("G"),
+                                  list("C", "G", "C", "T"),
+                                  list("A", "C"))),
+                     list("A", "A", "A", "G", "C", "G", "C", "T", "A", "C"));
     },
-    "Q2C-T3",
-    ['num_of_matches']
+    "Q1C-T01",
+    ['combine']
 );
-
 assert(
     () => {
-        const numsA = list(23, 21, 30, 15, 40, 4, 2, 1);
-        const numsB = list(1, 21, 23, 30, 4, 15, 2, 40);
-        return equal(num_of_matches(numsA, numsB), 8);
+        return equal(combine(null),
+                     null);
     },
-    "Q2C-T4",
-    ['num_of_matches']
+    "Q1C-T02",
+    ['combine']
 );
-
 assert(
     () => {
-        const numsA = list(2, 1, 30, 15);
-        const numsB = list(31, 29, 41, 16);
-        return equal(num_of_matches(numsA, numsB), 0);
+        return equal(combine(list(null)),
+                     null);
     },
-    "Q2C-T5",
-    ['num_of_matches']
+    "Q1C-T03",
+    ['combine']
 );
-
 assert(
     () => {
-        const numsA = list(2, 1, 30, 15);
-        const numsB = list(15, 29, 2, 16);
-        return equal(num_of_matches(numsA, numsB), 2);
+        return equal(combine(list(list("A"))),
+                     list("A"));
     },
-    "Q2C-T6",
-    ['num_of_matches']
+    "Q1C-T04",
+    ['combine']
 );
-
 assert(
     () => {
-        const numsA = list(23, 21, 30, 15, 40, 4, 2, 1, 35);
-        const numsB = list(1, 21, 23, 35, 30, 4, 15, 2, 40);
-        return equal(num_of_matches(numsA, numsB), 9);
+        return equal(combine(list(null, null, list("T"))),
+                     list("T"));
     },
-    "Q2C-T7",
-    ['num_of_matches']
+    "Q1C-T05",
+    ['combine']
 );
-
-
-
 ////////////////////////////////////////////////////////////
-// Test Cases for Q2D
+// Test Cases for Q1D
 ////////////////////////////////////////////////////////////
-
 assert(
     () => {
-        const bet_nums = list(40, 30, 1, 49, 23, 15);
-        const draw_nums = list(23, 1, 30, 15, 40, 49);
-        const extra_num = 27;
-        return equal(check_winning_group(bet_nums, draw_nums, extra_num), 1);
+        return equal(oxoguanine_repair(list("A", "8", "A", "8", "C", "T", "A", "C")),
+                     list("A", "G", "A", "G", "C", "T", "A", "C"));
     },
-    "Q2D-T1",
-    ['check_winning_group']
+    "Q1D-P01",
+    ['oxoguanine_repair']
 );
-
 assert(
     () => {
-        const bet_nums = list(40, 30, 1, 49, 27, 15);
-        const draw_nums = list(23, 1, 30, 15, 40, 49);
-        const extra_num = 27;
-        return equal(check_winning_group(bet_nums, draw_nums, extra_num), 2);
+        return equal(oxoguanine_repair(list("8", "8", "8", "8", "8")),
+                     list("G", "G", "G", "G", "G"));
     },
-    "Q2D-T2",
-    ['check_winning_group']
+    "Q1D-T01",
+    ['oxoguanine_repair']
 );
-
 assert(
     () => {
-        const bet_nums = list(40, 30, 1, 49, 17, 15);
-        const draw_nums = list(23, 1, 30, 15, 40, 49);
-        const extra_num = 27;
-        return equal(check_winning_group(bet_nums, draw_nums, extra_num), 3);
+        return equal(oxoguanine_repair(list("A", "A", "A", "A")),
+                     list("A", "A", "A", "A"));
     },
-    "Q2D-T3",
-    ['check_winning_group']
+    "Q1D-T02",
+    ['oxoguanine_repair']
 );
-
 assert(
     () => {
-        const bet_nums = list(40, 27, 1, 49, 17, 15);
-        const draw_nums = list(23, 1, 30, 15, 40, 49);
-        const extra_num = 27;
-        return equal(check_winning_group(bet_nums, draw_nums, extra_num), 4);
+        return equal(oxoguanine_repair(null),
+                     null);
     },
-    "Q2D-T4",
-    ['check_winning_group']
+    "Q1D-T03",
+    ['oxoguanine_repair']
 );
-
 assert(
     () => {
-        const bet_nums = list(40, 37, 1, 49, 17, 15);
-        const draw_nums = list(23, 1, 30, 15, 40, 49);
-        const extra_num = 27;
-        return equal(check_winning_group(bet_nums, draw_nums, extra_num), 5);
+        return equal(oxoguanine_repair(list("A", "T", "G", "C", "8")),
+                     list("A", "T", "G", "C", "G"));
     },
-    "Q2D-T5",
-    ['check_winning_group']
+    "Q1D-T04",
+    ['oxoguanine_repair']
 );
-
 assert(
     () => {
-        const bet_nums = list(40, 37, 1, 49, 17, 27);
-        const draw_nums = list(23, 1, 30, 15, 40, 49);
-        const extra_num = 27;
-        return equal(check_winning_group(bet_nums, draw_nums, extra_num), 0);
+        return equal(oxoguanine_repair(list("8", "C")),
+                     list("G", "C"));
     },
-    "Q2D-T6",
-    ['check_winning_group']
+    "Q1D-T05",
+    ['oxoguanine_repair']
 );
-
+////////////////////////////////////////////////////////////
+// Test Cases for Q1E
+////////////////////////////////////////////////////////////
 assert(
     () => {
-        const bet_nums = list(21, 32, 1, 49, 27, 15, 3);
-        const draw_nums = list(21, 30, 1, 49, 27, 15, 3);
-        const extra_num = 32;
-        return equal(check_winning_group(bet_nums, draw_nums, extra_num), 2);
+        return equal(find_gene_start(list("A", "C", "A", "T", "G", "T", "A", "C")),
+                     list(list("T", "A", "C")));
     },
-    "Q2D-T7",
-    ['check_winning_group']
+    "Q1E-P01",
+    ['find_gene_start']
 );
-
 assert(
     () => {
-        const bet_nums = list(41, 37, 2, 48, 17, 27);
-        const draw_nums = list(23, 1, 30, 15, 40, 49);
-        const extra_num = 27;
-        return equal(check_winning_group(bet_nums, draw_nums, extra_num), 0);
+        return equal(find_gene_start(list("A", "T", "A", "C", "G", "T", "A", "C")),
+                     null);
     },
-    "Q2D-T8",
-    ['check_winning_group']
+    "Q1E-P02",
+    ['find_gene_start']
 );
+assert(
+    () => {
+        return equal(find_gene_start(list("A", "T", "A", "G", "T", "A", "T", "G")),
+                     list(null));
+    },
+    "Q1E-P03",
+    ['find_gene_start']
+);
+assert(
+    () => {
+        return equal(find_gene_start(null),
+                     null);
+    },
+    "Q1E-T01",
+    ['find_gene_start']
+);
+assert(
+    () => {
+        return equal(find_gene_start(list("A", "A", "A", "T", "G", "A", "T", "G")),
+                     list(list("A", "T", "G")));
+    },
+    "Q1E-T02",
+    ['find_gene_start']
+);
+assert(
+    () => {
+        return equal(find_gene_start(list("A", "T", "G", "C", "G", "T", "A", "C")),
+                     list(list("C", "G", "T", "A", "C")));
+    },
+    "Q1E-T03",
+    ['find_gene_start']
+);
+assert(
+    () => {
+        return equal(find_gene_start(list("A", "T", "A", "T", "A", "T", "A", "T")),
+                     null);
+    },
+    "Q1E-T04",
+    ['find_gene_start']
+);
+////////////////////////////////////////////////////////////
+// Test Cases for Q1F
+////////////////////////////////////////////////////////////
+assert(
+    () => {
+        return equal(find_gene_end(list("A", "G", "A", "G", "T", "A", "A", "T", "A", "A")),
+                     list(list("A", "G", "A", "G")));
+    },
+    "Q1F-P01",
+    ['find_gene_end']
+);
+assert(
+    () => {
+        return equal(find_gene_end(list("A", "T", "A", "C", "C", "A", "G", "A", "T")),
+                     null);
+    },
+    "Q1F-P02",
+    ['find_gene_end']
+);
+assert(
+    () => {
+        return equal(find_gene_end(list("T", "G", "A", "A", "T", "A", "C")),
+                     list(null));
+    },
+    "Q1F-P03",
+    ['find_gene_end']
+);
+assert(
+    () => {
+        return equal(find_gene_end(list("G", "C", "T", "G", "A", "T", "A", "A")),
+                     list(list("G", "C")));
+    },
+    "Q1F-T01",
+    ['find_gene_end']
+);
+assert(
+    () => {
+        return equal(find_gene_end(list("T", "T", "A", "C", "A", "G", "A", "T")),
+                     null);
+    },
+    "Q1F-T02",
+    ['find_gene_end']
+);
+assert(
+    () => {
+        return equal(find_gene_end(list("T", "A", "A", "T", "G", "A", "C")),
+                     list(null));
+    },
+    "Q1F-T03",
+    ['find_gene_end']
+);
+////////////////////////////////////////////////////////////
+// Test Cases for Q1G
+////////////////////////////////////////////////////////////
+assert(
+    () => {
+        return equal(all_genes(list("C", "T", "A", "A", "G", "C")),
+                     null);
+    },
+    "Q1G-P01",
+    ['all_genes']
+);
+assert(
+    () => {
+        return equal(all_genes(list("A", "A", "T", "G", "A", "C", "T",
+                                    "A", "G", "G")),
+                     list(list("A", "C")));
+    },
+    "Q1G-P02",
+    ['all_genes']
+);
+assert(
+    () => {
+        return equal(all_genes(list("T", "A", "T", "G", "C", "A", "T",
+                                    "A", "A", "G", "T", "A", "G", "A",
+                                    "T", "G", "A", "T", "G", "A", "T")),
+                     list(list("C", "A"), list("A")));
+    },
+    "Q1G-P03",
+    ['all_genes']
+);
+*/
+© 2021 GitHub, Inc.
+Terms
+Privacy
+Security
+Status
+Docs
+Contact GitHub
+Pricing
+API
+Training
+Blog
+About
+Loading complete
