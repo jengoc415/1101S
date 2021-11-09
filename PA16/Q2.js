@@ -87,7 +87,9 @@ function num_of_matches(numsA, numsB) {
     
     // return matches;
     
-    return accumulate( (x, y) => y + (!is_null(member(x, numsB)) ? 1 : 0), 0, numsA );
+    return accumulate( 
+                (x, y) => y + (!is_null(member(x, numsB)) ? 1 : 0), 
+                0, numsA);
     
 }
 
