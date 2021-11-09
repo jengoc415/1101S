@@ -39,21 +39,27 @@ function all_different(nums) {
 ////////////////////////////////////////////////////////////
 
 function is_valid_toto_set(nums, n, min, max) {
-    let local_min = 999999;
-    let local_max = 0;
+    // let local_min = 999999;
+    // let local_max = 0;
     
-    function check(xs) {
-        if (is_null(xs)) {
-            return null;
-        } else {
-            local_min = math_min(head(xs), local_min);
-            local_max = math_max(head(xs), local_max);
-            return check(tail(xs));
-        }
+    // function check(xs) {
+    //     if (is_null(xs)) {
+    //         return null;
+    //     } else {
+    //         local_min = math_min(head(xs), local_min);
+    //         local_max = math_max(head(xs), local_max);
+    //         return check(tail(xs));
+    //     }
+    // }
+    
+    // check(nums);
+    // return length(nums) === n && min === local_min && max === local_max && all_different(nums);
+    
+    if (length(nums) !== n) {
+        return false;
     }
     
-    check(nums);
-    return length(nums) === n && min === local_min && max === local_max && all_different(nums);
+    return accumulate((x, y) => (x <= max && x >= min) && y, true, nums) && all_different(nums);
 }
         
 ////////////////////////////////////////////////////////////
