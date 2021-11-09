@@ -88,21 +88,17 @@ function big_int_add(bintX, bintY) {
     function add(x, y, carry) {
         if (is_null(x) && is_null(y)) {
             return (carry === 0) ? null : pair(carry, null);
-        } else if (is_null(x)) {
-            let sum = head(y) + carry;
-            return head(y) + carry > 9
-                ? pair(sum % 10, add(x, tail(y), 1))
-                : pair(sum, add(x, tail(y), 0));
-        } else if (is_null(y)) {
-            let sum = head(x) + carry;
-            return head(x) + carry > 9
-                ? pair(sum % 10, add(tail(x), y, 1))
-                : pair(sum, add(tail(x), y, 0));
         } else {
-            let sum = head(x) + head(y) + carry;
-            return sum > 9
-                ? pair(sum % 10, add(tail(x), tail(y), 1))
-                : pair(sum, add(tail(x), tail(y), 0));
+            let x_digit = is_null(x) ? 0 : head(x);
+            let y_digit = is_null(y) ? 0 : head(y);
+            let sum = x_digit + y_digit + carry;
+            carry = sum > 9 ? 1 : 0;
+            sum = sum > 9 ? sum % 10 : sum;
+            return pair(sum, is_null(x)
+                                    ? add(x, tail(y), carry)
+                                    : is_null(y)
+                                    ? add(tail(x), y, carry)
+                                    : add(tail(x), tail(y), carry));
         }
     }
     return add(bintX, bintY, 0);
