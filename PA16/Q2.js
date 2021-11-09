@@ -68,24 +68,27 @@ function is_valid_toto_set(nums, n, min, max) {
 
 function num_of_matches(numsA, numsB) {
 
-    let arr = [];
-    let matches = 0;
+    // let arr = [];
+    // let matches = 0;
     
-    function traverse(xs) {
-        if (is_null(xs)) {
-            return null;
-        } else if (arr[head(xs)] !== undefined) {
-            matches = matches + 1;
-        } else {
-            arr[head(xs)] = head(xs);
-        }
-        traverse(tail(xs));
-    }
+    // function traverse(xs) {
+    //     if (is_null(xs)) {
+    //         return null;
+    //     } else if (arr[head(xs)] !== undefined) {
+    //         matches = matches + 1;
+    //     } else {
+    //         arr[head(xs)] = head(xs);
+    //     }
+    //     traverse(tail(xs));
+    // }
     
-    traverse(numsA);
-    traverse(numsB);
+    // traverse(numsA);
+    // traverse(numsB);
     
-    return matches;
+    // return matches;
+    
+    return accumulate( (x, y) => y + (!is_null(member(x, numsB)) ? 1 : 0), 0, numsA );
+    
 }
 
 
