@@ -184,11 +184,20 @@ function build_nth_largest_int(digits, n) {
     }
     
     let arr = copy_array(digits);
-    
-    
+    sort_ascending(arr);
+    reverse_array(arr);
+    let digits_list = array_to_list(arr);
+    let permed = permutations(digits_list);
+    let len = length(permed);
+    let final = n > len - 1
+        ? list_ref(permed, len-1)
+        : list_ref(permed, n-1);
+        
+    return digits_to_string(list_to_array(final));
 }
 
 // TASK 2C TESTS
+
 assert("2C_1", () => build_nth_largest_int([1,2,4,3], 1),
     "4321", ["build_largest_int", "build_2nd_largest_int"]);
 assert("2C_2", () => build_nth_largest_int([3,1,4,2], 2),
