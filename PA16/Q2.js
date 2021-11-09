@@ -12,21 +12,25 @@
 
 function all_different(nums) {
 
-    let arr = [];
-    let duplicate_found = false;
+    // let arr = [];
+    // let duplicate_found = false;
     
-    function traverse(xs) {
-        if (is_null(xs)) {
-            return null;
-        } else if (arr[head(xs)] !== undefined) {
-            duplicate_found = true;
-        } else {
-            arr[head(xs)] = head(xs);
-            traverse(tail(xs));
-        }
-    }
-    traverse(nums);
-    return !duplicate_found;
+    // function traverse(xs) {
+    //     if (is_null(xs)) {
+    //         return null;
+    //     } else if (arr[head(xs)] !== undefined) {
+    //         duplicate_found = true;
+    //     } else {
+    //         arr[head(xs)] = head(xs);
+    //         traverse(tail(xs));
+    //     }
+    // }
+    // traverse(nums);
+    // return !duplicate_found;
+    
+    return is_null(nums)
+        ? true
+        : is_null( member(head(nums), tail(nums)) ) && all_different(tail(nums));
 }
 
 
