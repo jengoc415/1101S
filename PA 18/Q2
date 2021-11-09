@@ -1,20 +1,4 @@
-// QUESTION 2
 
-// Instructions for students who are using this for practice:
-//
-// (1) Copy and paste this entire file into the editor of Source Academy
-//     Playground at https://sourceacademy.nus.edu.sg/playground
-// (2) Write your solution for each task in the Source Academy Playground.
-// (3) Run the program to test your solution on the given testcases.
-
-
-//===============================================================
-// These functions are provided for running the testcases
-// in the Source Academy Playground.
-// They are NOT part of the actual testing facility provided
-// in the actual Practical Assessment.
-//===============================================================
-// Tests whether arrays A and B are structurally equal.
 function equal_array(A, B) {
     if (!is_array(A) || !is_array(B)) {
         return false;
