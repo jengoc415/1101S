@@ -103,31 +103,6 @@ function big_int_add(bintX, bintY) {
 }
 
 
-// function big_int_add(bintX, bintY) {
-//     // You may modify the given partial implementation,
-//     // or remove it and write your own.
-
-//     function add(x, y, carry) {
-//         if (is_null(x) && is_null(y)) {
-//             return (carry === 0) ? null : pair(carry, null);
-//         } else {
-//             // WRITE HERE.
-//             // ---BEGIN TASK---
-//             const xdigit = (is_null(x)) ? 0 : head(x);
-//             const ydigit = (is_null(y)) ? 0 : head(y);
-//             const sum = xdigit + ydigit + carry;
-//             const new_digit = sum % 10;
-//             const new_carry = (sum - new_digit) / 10;
-//             return pair(new_digit,
-//                         add((is_null(x)) ? x : tail(x),
-//                             (is_null(y)) ? y : tail(y), new_carry));
-//             // ---END TASK---
-//         }
-//     }
-//     return add(bintX, bintY, 0);
-// }
-
-
 // // TASK 1C TESTS
 assert("1C_1", () => big_int_add(list(0), list(3,2,1)),
     list(3,2,1), ["make_big_int_from_number"]);
