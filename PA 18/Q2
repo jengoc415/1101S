@@ -141,14 +141,24 @@ function build_2nd_largest_int(digits) {
     let arr = copy_array(digits);
     sort_ascending(arr);
     reverse_array(arr);
-    let sorted_list = array_to_list(arr);
-    let max = head(sorted_list);
     
+    let no_of_change = 0;
     
+    for (let x = 1; x < array_length(digits); x = x + 1) {
+        
+        if (arr[x] === arr[x-1]) {
+            continue;
+        } else {
+            no_of_change = no_of_change + 1;
+            if (no_of_change === 2) {
+                swap(arr, x, x-1);
+            }
+        }
+    }
     
+    return display(digits_to_string(arr));
 }
-build_2nd_largest_int([4,1,9,1,4,9,1]);
-/*
+
 // TASK 2B TESTS
 assert("2B_1", () => build_2nd_largest_int([1]),
     "1", ["build_largest_int"]);
@@ -162,7 +172,7 @@ assert("2B_5", () => build_2nd_largest_int([5,5,5,5,5,5,7,5,5,5]),
     "5755555555", ["build_largest_int"]);
 assert("2B_6", () => build_2nd_largest_int([5,5,5,5,5,5,5,5,5,5]),
     "5555555555", ["build_largest_int"]);
-*/
+
 
 //===============================================================
 // TASK 2C
