@@ -141,25 +141,20 @@ function build_2nd_largest_int(digits) {
     let arr = copy_array(digits);
     sort_ascending(arr);
     reverse_array(arr);
-    
-    let no_of_change = 0;
-    
-    for (let x = 1; x < array_length(digits); x = x + 1) {
-        
+    let len = array_length(arr);
+    for (let x = len - 1; x > 0; x = x - 1) {
         if (arr[x] === arr[x-1]) {
             continue;
         } else {
-            no_of_change = no_of_change + 1;
-            if (no_of_change === 2) {
-                swap(arr, x, x-1);
-            }
+            swap(arr, x, x-1);
+            break;
         }
     }
     
-    return display(digits_to_string(arr));
+    return digits_to_string(arr);
 }
 
-// TASK 2B TESTS
+// // TASK 2B TESTS
 assert("2B_1", () => build_2nd_largest_int([1]),
     "1", ["build_largest_int"]);
 assert("2B_2", () => build_2nd_largest_int([1,2,3,4,5]),
