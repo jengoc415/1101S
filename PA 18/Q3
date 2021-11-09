@@ -85,9 +85,10 @@ function count_peaks(emap) {
     
     for (let y = 1; y < height - 1; y = y + 1) {
         for (let x = 1; x < width - 1; x = x + 1) {
-            if (count_lower_neighbors(emap, x, y) === 8) {
+            if (count_lower_neighbors(emap, y, x) === 8) {
                 count = count + 1;
             }
+
         }
     }
     return count;
@@ -102,6 +103,7 @@ const emapA2a =
  [1, 1, 1, 1, 3, 1, 1],
  [1, 2, 1, 1, 3, 1, 3],
  [1, 1, 1, 1, 4, 1, 1]]; // 3 peaks
+
 const emapA2b =
 [[3, 1, 4, 1, 5, 1, 6, 1],
  [1, 1, 1, 1, 1, 1, 1, 1],
@@ -112,16 +114,19 @@ const emapA2b =
  [1, 9, 1, 8, 1, 7, 1, 6],
  [1, 1, 1, 1, 1, 1, 1, 1],
  [8, 1, 9, 1, 8, 1, 9, 1]]; // 9 peaks
-assert("3A(II)_1", () => count_peaks([[5]]),
-    0, ["count_lower_neighbors"]);
-assert("3A(II)_2", () => count_peaks([[2,3,4],[3,5,3],[4,3,2]]),
-    1, ["count_lower_neighbors"]);
-assert("3A(II)_3", () => count_peaks(emapA2a),
-    3, ["count_lower_neighbors"]);
-assert("3A(II)_4", () => count_peaks(emapA2b),
-    9, ["count_lower_neighbors"]);
+ 
+ 
 
-/*
+// assert("3A(II)_1", () => count_peaks([[5]]),
+//     0, ["count_lower_neighbors"]);
+// assert("3A(II)_2", () => count_peaks([[2,3,4],[3,5,3],[4,3,2]]),
+//     1, ["count_lower_neighbors"]);
+// assert("3A(II)_3", () => count_peaks(emapA2a),
+//     3, ["count_lower_neighbors"]);
+// assert("3A(II)_4", () => count_peaks(emapA2b),
+//     9, ["count_lower_neighbors"]);
+
+
 //===============================================================
 // TASK 3B
 //===============================================================
@@ -148,6 +153,9 @@ const emapB2 =
  [1, 1, 2, 0, 0, 0, 0, 0],
  [1, 0, 1, 0, 0, 1, 2, 3],
  [1, 3, 2, 1, 1, 0, 1, 1]]; // 5 islands
+ 
+ count_peaks(emapB2);
+ /*
 assert("3B_1", () => count_islands([[0]]), 0, []);
 assert("3B_2", () => count_islands([[1]]), 1, []);
 assert("3B_3", () => count_islands([[0,0], [0,0]]), 0, []);
