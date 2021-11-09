@@ -102,15 +102,15 @@ function num_of_matches(numsA, numsB) {
 function check_winning_group(bet_nums, draw_nums, extra_num) {
     let matches = num_of_matches(bet_nums, draw_nums);
     let n = length(draw_nums);
-    let match_extra = num_of_matches(bet_nums, list(extra_num));
+    let match_extra = !is_null(member(extra_num, bet_nums));
 
     return matches === n
         ? 1
-        : matches === n-1 && match_extra === 1
+        : matches === n-1 && match_extra
         ? 2
         : matches === n-1
         ? 3
-        : matches === n-2 && match_extra === 1
+        : matches === n-2 && match_extra
         ? 4
         : matches === n-2
         ? 5
