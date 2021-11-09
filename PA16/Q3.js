@@ -12,24 +12,39 @@
 
 function evaluate_BAE_tree(bae_tree) {
 
-    // WRITE HERE.
-
+    if (!is_list(bae_tree)) {
+        return bae_tree;
+    } else {
+        let left = evaluate_BAE_tree(head(bae_tree));
+        let mid = evaluate_BAE_tree(head(tail(bae_tree)));
+        let right = evaluate_BAE_tree(head(tail(tail(bae_tree))));
+        
+        return mid === "+"
+            ? left + right
+            : mid === "-"
+            ? left - right
+            : mid === "*"
+            ? left * right
+            : left / right;
+    }
 }
-
-
 
 ////////////////////////////////////////////////////////////
 // Question 3B
 ////////////////////////////////////////////////////////////
 
 function build_BAE_tree(bae_list) {
-
-    // WRITE HERE.
-
+    if (length(bae_list) === 1) {
+        return head(bae_list);
+    } else if (head(bae_list) === "(") {
+        return list(
+    }
 }
 
+const bae_list = list("(", 2, "+", 5, ")"); 
+display_list(build_BAE_tree(bae_list));
 
-
+/*
 ////////////////////////////////////////////////////////////
 // Question 3C
 ////////////////////////////////////////////////////////////
@@ -355,3 +370,4 @@ assert(
     "Q3D-T8",
     ['check_parentheses']
 );
+*/
