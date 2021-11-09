@@ -71,7 +71,19 @@ function evaluate_BAE(bae_list) {
 
 function check_parentheses(paren_list) {
 
-    // WRITE HERE.
+    function check(count, xs) {
+        if (is_null(xs)) {
+            return (count === 0);
+        } else if (count < 0) {
+            return false;
+        } else if (head(xs) === "(") {
+            return check(count + 1, tail(xs));
+        } else { // (head(xs) === ")")
+            return check(count - 1, tail(xs));
+        }
+    }
+
+    return check(0, paren_list);
 
 }
 
