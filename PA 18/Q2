@@ -155,18 +155,18 @@ function build_2nd_largest_int(digits) {
 }
 
 // // TASK 2B TESTS
-assert("2B_1", () => build_2nd_largest_int([1]),
-    "1", ["build_largest_int"]);
-assert("2B_2", () => build_2nd_largest_int([1,2,3,4,5]),
-    "54312", ["build_largest_int"]);
-assert("2B_3", () => build_2nd_largest_int([9,8,7]),
-    "978", ["build_largest_int"]);
-assert("2B_4", () => build_2nd_largest_int([4,1,9,1,4,9,1]),
-    "9941411", ["build_largest_int"]);
-assert("2B_5", () => build_2nd_largest_int([5,5,5,5,5,5,7,5,5,5]),
-    "5755555555", ["build_largest_int"]);
-assert("2B_6", () => build_2nd_largest_int([5,5,5,5,5,5,5,5,5,5]),
-    "5555555555", ["build_largest_int"]);
+// assert("2B_1", () => build_2nd_largest_int([1]),
+//     "1", ["build_largest_int"]);
+// assert("2B_2", () => build_2nd_largest_int([1,2,3,4,5]),
+//     "54312", ["build_largest_int"]);
+// assert("2B_3", () => build_2nd_largest_int([9,8,7]),
+//     "978", ["build_largest_int"]);
+// assert("2B_4", () => build_2nd_largest_int([4,1,9,1,4,9,1]),
+//     "9941411", ["build_largest_int"]);
+// assert("2B_5", () => build_2nd_largest_int([5,5,5,5,5,5,7,5,5,5]),
+//     "5755555555", ["build_largest_int"]);
+// assert("2B_6", () => build_2nd_largest_int([5,5,5,5,5,5,5,5,5,5]),
+//     "5555555555", ["build_largest_int"]);
 
 
 //===============================================================
@@ -174,11 +174,20 @@ assert("2B_6", () => build_2nd_largest_int([5,5,5,5,5,5,5,5,5,5]),
 //===============================================================
 function build_nth_largest_int(digits, n) {
 
-    // WRITE HERE.
-
+    function permutations(ys) {
+        return is_null(ys)
+            ? list(null)
+            : accumulate(append, null,
+                map(x => map(p => pair(x, p),
+                             permutations(remove(x, ys))),
+                    ys));
+    }
+    
+    let arr = copy_array(digits);
+    
+    
 }
 
-/*
 // TASK 2C TESTS
 assert("2C_1", () => build_nth_largest_int([1,2,4,3], 1),
     "4321", ["build_largest_int", "build_2nd_largest_int"]);
@@ -203,5 +212,5 @@ assert("2C_10", () => build_nth_largest_int([5,3,7], 10),
 assert("2C_11", () => build_nth_largest_int([5], 10),
     "5", ["build_largest_int", "build_2nd_largest_int"]);
 
-*/
+
 //===============================================================
