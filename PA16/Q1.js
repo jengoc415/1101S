@@ -130,8 +130,6 @@ function find_gene_end(xs) {
 function all_genes(xs) {
     
     let temp = find_gene_start(xs);
-    display(temp);
-    display(find_gene_start(temp));
 
     if (is_null(temp)) {
         return null;
@@ -141,9 +139,9 @@ function all_genes(xs) {
 
 }
 
-display_list(all_genes(list("T", "A", "T", "G", "C", "A", "T", "A", "A", "G", "T", "A", "G", "A",
-"T", "G", "A", "T", "G", "A", "T")));
-/*
+// display_list(all_genes(list("T", "A", "T", "G", "C", "A", "T", "A", "A", "G", "T", "A", "G", "A",
+// "T", "G", "A", "T", "G", "A", "T")));
+
 ////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////
@@ -540,4 +538,3 @@ assert(
     "Q1G-P03",
     ['all_genes']
 );
-*/
