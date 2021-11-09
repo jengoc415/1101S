@@ -130,17 +130,20 @@ function find_gene_end(xs) {
 function all_genes(xs) {
     
     let temp = find_gene_start(xs);
-
     if (is_null(temp)) {
         return null;
+    }
+
+    let found = find_gene_end(head(temp));
+    
+    if (is_null(found)) {
+        return null;
     } else {
-        return append(temp, find_gene_start(temp));
+        return pair(head(found), all_genes(head(temp)));
     }
 
 }
 
-// display_list(all_genes(list("T", "A", "T", "G", "C", "A", "T", "A", "A", "G", "T", "A", "G", "A",
-// "T", "G", "A", "T", "G", "A", "T")));
 
 ////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////
