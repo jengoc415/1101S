@@ -34,25 +34,33 @@ function evaluate_BAE_tree(bae_tree) {
 ////////////////////////////////////////////////////////////
 
 function build_BAE_tree(bae_list) {
-    if (length(bae_list) === 1) {
-        return head(bae_list);
-    } else if (head(bae_list) === "(") {
-        return list(
+    let next_token = bae_list;
+
+    function build_tree() {
+        if (equal(head(next_token), "(")) {
+            next_token = tail(next_token);
+            const left_tree = build_tree();
+            const op = head(next_token);
+            next_token = tail(next_token);
+            const right_tree = build_tree();
+            next_token = tail(next_token); // skip over ")"
+            return list(left_tree, op, right_tree);
+        } else { // token is a number
+            const token = head(next_token);
+            next_token = tail(next_token);
+            return token;
+        }
     }
+
+    return build_tree();
 }
 
-const bae_list = list("(", 2, "+", 5, ")"); 
-display_list(build_BAE_tree(bae_list));
-
-/*
 ////////////////////////////////////////////////////////////
 // Question 3C
 ////////////////////////////////////////////////////////////
 
 function evaluate_BAE(bae_list) {
-
-    // WRITE HERE.
-
+    return evaluate_BAE_tree(build_BAE_tree(bae_list));
 }
 
 
@@ -370,4 +378,3 @@ assert(
     "Q3D-T8",
     ['check_parentheses']
 );
-*/
