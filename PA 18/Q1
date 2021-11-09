@@ -94,15 +94,38 @@ function big_int_add(bintX, bintY) {
             let sum = x_digit + y_digit + carry;
             carry = sum > 9 ? 1 : 0;
             sum = sum > 9 ? sum % 10 : sum;
-            return pair(sum, is_null(x)
-                                    ? add(x, tail(y), carry)
-                                    : is_null(y)
-                                    ? add(tail(x), y, carry)
-                                    : add(tail(x), tail(y), carry));
+            return pair(sum, add( is_null(x) ? x : tail(x),
+                                  is_null(y) ? y : tail(y),
+                                  carry));
         }
     }
     return add(bintX, bintY, 0);
 }
+
+
+// function big_int_add(bintX, bintY) {
+//     // You may modify the given partial implementation,
+//     // or remove it and write your own.
+
+//     function add(x, y, carry) {
+//         if (is_null(x) && is_null(y)) {
+//             return (carry === 0) ? null : pair(carry, null);
+//         } else {
+//             // WRITE HERE.
+//             // ---BEGIN TASK---
+//             const xdigit = (is_null(x)) ? 0 : head(x);
+//             const ydigit = (is_null(y)) ? 0 : head(y);
+//             const sum = xdigit + ydigit + carry;
+//             const new_digit = sum % 10;
+//             const new_carry = (sum - new_digit) / 10;
+//             return pair(new_digit,
+//                         add((is_null(x)) ? x : tail(x),
+//                             (is_null(y)) ? y : tail(y), new_carry));
+//             // ---END TASK---
+//         }
+//     }
+//     return add(bintX, bintY, 0);
+// }
 
 
 // // TASK 1C TESTS
