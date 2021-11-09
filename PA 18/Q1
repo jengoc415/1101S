@@ -1,20 +1,3 @@
-// QUESTION 1
-
-// Instructions for students who are using this for practice:
-//
-// (1) Copy and paste this entire file into the editor of Source Academy
-//     Playground at https://sourceacademy.nus.edu.sg/playground
-// (2) Write your solution for each task in the Source Academy Playground.
-// (3) Run the program to test your solution on the given testcases.
-
-
-//===============================================================
-// These functions are provided for running the testcases
-// in the Source Academy Playground.
-// They are NOT part of the actual testing facility provided
-// in the actual Practical Assessment.
-//===============================================================
-// Tests whether arrays A and B are structurally equal.
 function equal_array(A, B) {
     if (!is_array(A) || !is_array(B)) {
         return false;
@@ -33,8 +16,7 @@ function equal_array(A, B) {
         return is_equal;
     }
 }
-// NOTE: This is NOT the actual assert function used
-//       in the actual Practical Assessment.
+
 function assert(test_name, test_func, truth, dependence) {
     const result = test_func();
     const is_equal = (is_array(truth)? equal_array(result, truth)
@@ -54,12 +36,12 @@ function assert(test_name, test_func, truth, dependence) {
 //===============================================================
 function make_big_int_from_number(num) {
 
-    // WRITE HERE.
-
+     return num / 10 < 1
+        ? pair(num, null)
+        : pair(num%10, make_big_int_from_number(math_floor(num/10)));
 }
 
-
-// TASK 1A TESTS
+// // TASK 1A TESTS
 assert("1A_1", () => make_big_int_from_number(0),
     list(0), []);
 assert("1A_2", () => make_big_int_from_number(5),
@@ -76,13 +58,13 @@ assert("1A_5", () => make_big_int_from_number(9876543210),
 // TASK 1B
 //===============================================================
 function big_int_to_string(bint) {
-
-    // WRITE HERE.
-
+    let first = stringify(head(bint));
+    let new_bint = tail(bint);
+    let str = map(stringify, new_bint);
+    return accumulate((x, y) => x + y, first, reverse(str));
 }
 
-
-// TASK 1B TESTS
+// // TASK 1B TESTS
 assert("1B_1", () => big_int_to_string(list(0)),
     "0", []);
 assert("1B_2", () => big_int_to_string(list(5)),
@@ -97,7 +79,6 @@ assert("1B_6", () => big_int_to_string(
     list(1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9)),
     "9876543210987654321", []);
 
-
 //===============================================================
 // TASK 1C
 //===============================================================
@@ -108,17 +89,28 @@ function big_int_add(bintX, bintY) {
     function add(x, y, carry) {
         if (is_null(x) && is_null(y)) {
             return (carry === 0) ? null : pair(carry, null);
+        } else if (is_null(x)) {
+            let sum = head(y) + carry;
+            return head(y) + carry > 9
+                ? pair(sum % 10, add(x, tail(y), 1))
+                : pair(sum, add(x, tail(y), 0));
+        } else if (is_null(y)) {
+            let sum = head(x) + carry;
+            return head(x) + carry > 9
+                ? pair(sum % 10, add(tail(x), y, 1))
+                : pair(sum, add(tail(x), y, 0));
         } else {
-
-            // WRITE HERE.
-
+            let sum = head(x) + head(y) + carry;
+            return sum > 9
+                ? pair(sum % 10, add(tail(x), tail(y), 1))
+                : pair(sum, add(tail(x), tail(y), 0));
         }
     }
     return add(bintX, bintY, 0);
 }
 
 
-// TASK 1C TESTS
+// // TASK 1C TESTS
 assert("1C_1", () => big_int_add(list(0), list(3,2,1)),
     list(3,2,1), ["make_big_int_from_number"]);
 assert("1C_2", () => big_int_add(list(5,6,7), list(0)),
@@ -139,11 +131,22 @@ assert("1C_6", () => big_int_add(
 // TASK 1D
 //===============================================================
 function big_int_mult_by_digit(bint, digit) {
-
-    // WRITE HERE.
-
+    if (digit === 0) {
+        return list(0);
+    } else if (digit === 1) {
+        return bint;
+    }
+    
+    let count = digit;
+    let final = list(0);
+    
+    while (count > 0) {
+        final = big_int_add(final, bint);
+        count = count - 1;
+    }
+    
+    return final;
 }
-
 
 // TASK 1D TESTS
 assert("1D_1", () => big_int_mult_by_digit(list(0), 5),
@@ -162,13 +165,16 @@ assert("1D_4", () => big_int_mult_by_digit(
 // TASK 1E
 //===============================================================
 function big_int_mult_by_10_pow_n(bint, n) {
-
-    // WRITE HERE.
-
+    if (head(bint) === 0) {
+        return bint;
+    }
+    
+    let zeros_to_add = build_list(x => 0, n);
+    return append(zeros_to_add, bint);
 }
 
 
-// TASK 1E TESTS
+// // TASK 1E TESTS
 assert("1E_1", () => big_int_mult_by_10_pow_n(list(0), 5),
     list(0),
     ["make_big_int_from_number", "big_int_add", "big_int_mult_by_digit"]);
@@ -187,13 +193,31 @@ assert("1E_4", () => big_int_mult_by_10_pow_n(list(5,8,3,1), 20),
 // TASK 1F
 //===============================================================
 function big_int_mult(bintX, bintY) {
+    if (is_null(bintY)) {
+        return list(0);
+    } else if (bintX === list(0) || bintY === list(0)) {
+        return list(0);
+    } else if (bintX === list(1) || bintY === list(1)) {
+        return bintX === list(1)
+            ? bintY
+            : bintX;
+    } else {
+        let end = length(bintY);
 
-    // WRITE HERE.
-
+        function helper(x, y, carry) {
+            if (carry > end - 1) {
+                return list(0);
+            } else {
+                let current_sum = big_int_mult_by_digit(x, head(y));
+                current_sum = big_int_mult_by_10_pow_n(current_sum, carry);
+                return big_int_add(current_sum, helper(x, tail(y), carry + 1));
+            }
+        }
+        return helper(bintX, bintY, 0);
+    }
 }
 
-
-// TASK 1F TESTS
+//TASK 1F TESTS
 assert("1F_1", () => big_int_mult(list(0), list(0)),
     list(0),
     ["make_big_int_from_number", "big_int_add",
@@ -224,5 +248,4 @@ assert("1F_7", () => big_int_mult(
     ["make_big_int_from_number", "big_int_add",
     "big_int_mult_by_digit", "big_int_mult_by_10_pow_n"]);
 
-
-//===============================================================
+// //===============================================================
