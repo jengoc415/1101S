@@ -83,25 +83,22 @@ function attack_diagonally(qs) {
 }
 
 
-function queens(n) {
-    let columns_sequence = enum_list(1, n);
-    let rows_sequence_perms = permutations(columns_sequence);
+// function queens(n) {
+//     let columns_sequence = enum_list(1, n);
+//     let rows_sequence_perms = permutations(columns_sequence);
     
-    return map(row_sequence => zip(make_queen, columns_sequence, row_sequence), 
-                              rows_sequence_perms);
-}
+//     return map(row_sequence => zip(make_queen, columns_sequence, row_sequence), 
+//                               rows_sequence_perms);
+// }
 
-function solutions(n) { 
-    let all_possible = queens(n);
-    return filter(!attack_any_diagonally, all_possible);
-}
+// function solutions(n) { 
+//     let all_possible = queens(n);
+//     return filter(x => !attack_any_diagonally(x), all_possible);
+// }
 
-solutions(3);
 
-// const twice = f => x => f(f(x));
-// const plus_one = x => x + 1;
 
-// twice(twice)(twice)(plus_one)(0);
+
 
 
 
