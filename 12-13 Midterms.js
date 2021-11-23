@@ -17,21 +17,40 @@ function simple_conditional(a, b, c) {
     }
 }
 
-//
+function mystery(x) {
+    return y => z => y(z)(x);
+}
 
-const diff = z => x => z - x;
+const diff = z => x => x - z;
+
+function square(x) { 
+    return x * x;
+}
+function add_one(x) {
+    return x + 1; 
+}
+
+function compose1(f, g) { 
+    return x => f(g(x));
+}
+
+function compose2(f, g) {
+    return f(g); 
+    
+}
 
 // compose1(square, add_one)(7);
 // square(compose2(add_one, 7));
+// compose2(square,add_one(7));
 
 function list_to_tsil(xs) {
     if (is_null(xs)) {
         return null;
     }
-    
+
     let temp = tail(xs);
     set_tail(xs, head(xs));
-    set_head(xs, list_to_tsil(head(xs)));
+    set_head(xs, list_to_tsil(temp));
     return xs;
 }
 
@@ -42,7 +61,6 @@ function sum_of_list(xs) {
         return head(xs) + sum_of_list(tail(xs)); 
     }
 }
-
 
 function iter_list_sum(xs) {
     function helper(ys, acc) {
@@ -55,6 +73,10 @@ function iter_list_sum(xs) {
 }
 
 function multi_map(f, xss) {
+    if (is_null(head(xss))) {
+        return null;
+    }
+    
     let len = length(head(xss));
     
     function helper(k) {
@@ -67,6 +89,15 @@ function multi_map(f, xss) {
     }
     
     return helper(0);
+}
+
+function model_multi_map(f, xss) { 
+    if (is_null(head(xss))) {
+        return null; 
+    } else {
+        return pair( f(map(head, xss)),
+                     multi_map(f, map(tail, xss)) );
+    }
 }
 
 function make_coordinates(row, column) {
@@ -84,7 +115,7 @@ function get_y(coordinates) {
 function access(coordinates_list, grid) {
     let x = get_x(coordinates_list);
     let y = get_y(coordinates_list);
-    return list_ref(grid, list_ref(grid, x));
+    return list_ref(list_ref(grid, x), y);
 }
 
 function all_different(xs) {
@@ -96,7 +127,7 @@ function all_different(xs) {
 }
 
 function make_row_coordinates_list(row) {
-    return build_list(x => pair(row, x), 9);
+    return build_list(x => make_coordinates(row, x), 9);
 }
 
 function test_coordinates_list(grid, coordinates_list) {
@@ -138,6 +169,13 @@ function test_sudoku(grid) {
                                 true,
                                 all_lists_to_check);
 }
+
+
+
+
+
+
+
 
 
 
