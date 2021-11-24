@@ -493,35 +493,20 @@ function parse_and_evaluate(input) {
 // test cases
 
 parse_and_evaluate(` 
-const eugene = x => 2 * x;
-eugene(20);
-let y = 1;`);
+function shaune(eugene) {
+    let y = 5;
+    return eugene + y;
+}
+
+shaune(10);`);
 /*
 list("sequence", list_of_statements);
                     |--> list(function, application, literal) // statements
                                 |--> list(declaration_type, name, body)
                                                                    |--> list(tag, list(params), list(return statement)
-                                                                                                            --> list(tag, op, list(tag, data), list(tag, data))
-
-
-list("sequence",
-     list(list("constant_declaration",
-               list("name", "eugene"),
-               list("lambda_expression",
-                    list(list("name", "x")),
-                    list("return_statement",
-                         list("binary_operator_combination", "*", list("literal", 2), list("name", "x"))))),
-          list("application", list("name", "eugene"), list(list("literal", 20))),
-          list("literal", 1)));
-
+list(tag, pred_expression, literal, literal);                                                                                                             --> list(tag, op, list(tag, data), list(tag, data)
 
 */
-
-
-
-
-
-
 
 
 
