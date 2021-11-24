@@ -82,22 +82,30 @@ function scan_out_declarations(component) {
                         null,
                         map(scan_out_declarations,
                             sequence_statements(component)))
+                            // list( statement1, s2, s3);
            : is_declaration(component)
            ? list(declaration_symbol(component))
+           // list(list("eugene"), null, null);
            : null;
 }
 // component -> list("block", program)
-// env -> global environment
+// env -> global environment --> pair( [ list(symbols), list(values) ], null);
 function eval_block(component, env) {
     const body = block_body(component);
+    // body = program;
     const locals = scan_out_declarations(body);
+    // locals = list(function_names_declared); e.g. list("eugene");
     const unassigneds = list_of_unassigned(locals);
+
     return evaluate(body, extend_environment(locals,
                                              unassigneds, 
                                              env));
+                                            
+    // return evaluate(program, env);
 }
+
 function list_of_unassigned(symbols) {
-    return map(symbol => "*unassigned*", symbols);
+    return map(symbol => "test", symbols);
 }
 
 function eval_return_statement(component, env) {
@@ -147,6 +155,7 @@ function make_name(symbol) {
 
 function symbol_of_name(component) {
     return head(tail(component));
+    //return "eugene";
 }
 
 function is_assignment(component) {
@@ -167,6 +176,7 @@ function is_declaration(component) {
 
 function declaration_symbol(component) {
     return symbol_of_name(head(tail(component)));
+    // symbol_of_name(list("name", "function_name"));
 }
 function declaration_value_expression(component) {
     return head(tail(tail(component)));
@@ -352,6 +362,11 @@ function extend_environment(symbols, vals, base_env) {
     return length(symbols) === length(vals)
            ? pair(make_frame(symbols, vals), base_env)
 // Global Environment -> pair( [ list(all_symbols), list(all_vals) ], null );
+
+// Next env -> pair( list_of_local_assigned_and_unassigned, 
+//             pair( list_of_primitives_and_values, null) );
+
+// env -> list(local_assigned, parent_frames_assigned);
            : length(symbols) < length(vals)
            ? error("too many arguments supplied: " + 
                    stringify(symbols) + ", " + 
@@ -469,6 +484,7 @@ const the_global_environment = setup_environment();
 // * evaluate block in global environment
 function parse_and_evaluate(input) {
     const program = parse(input);
+    display_list(program);
     const implicit_top_level_block = make_block(program);
     return evaluate(implicit_top_level_block,
                     the_global_environment);
@@ -476,22 +492,30 @@ function parse_and_evaluate(input) {
 
 // test cases
 
-parse_and_evaluate(`               
+parse_and_evaluate(` 
 const eugene = x => 2 * x;
 eugene(20);
-1;`);
+let y = 1;`);
 /*
 list("sequence", list_of_statements);
                     |--> list(function, application, literal) // statements
                                 |--> list(declaration_type, name, body)
                                                                    |--> list(tag, list(params), list(return statement)
                                                                                                             --> list(tag, op, list(tag, data), list(tag, data))
+
+
+list("sequence",
+     list(list("constant_declaration",
+               list("name", "eugene"),
+               list("lambda_expression",
+                    list(list("name", "x")),
+                    list("return_statement",
+                         list("binary_operator_combination", "*", list("literal", 2), list("name", "x"))))),
+          list("application", list("name", "eugene"), list(list("literal", 20))),
+          list("literal", 1)));
+
+
 */
-
-list("block", program);
-
-
-
 
 
 
