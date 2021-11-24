@@ -18,6 +18,7 @@ function evaluate(component, env) {
            : is_lambda_expression(component)
            ? make_function(lambda_parameter_symbols(component),
                            lambda_body(component), env)
+        //   make_function(list("eugene", "reagan"), body, env);
            : is_sequence(component)
            ? eval_sequence(sequence_statements(component), env)
            : is_block(component)
@@ -42,6 +43,7 @@ function apply(fun, args) {
                                     function_parameters(fun),
                                     args,
                                     function_environment(fun)));
+                                    
         return is_return_value(result)
                ? return_value_content(result)
                : undefined;
@@ -484,7 +486,6 @@ const the_global_environment = setup_environment();
 // * evaluate block in global environment
 function parse_and_evaluate(input) {
     const program = parse(input);
-    display_list(program);
     const implicit_top_level_block = make_block(program);
     return evaluate(implicit_top_level_block,
                     the_global_environment);
@@ -493,12 +494,12 @@ function parse_and_evaluate(input) {
 // test cases
 
 parse_and_evaluate(` 
-function shaune(eugene) {
+function shaune(eugene, reagan) {
     let y = 5;
-    return eugene + y;
+    return eugene + reagan + y;
 }
 
-shaune(10);`);
+shaune(10, 90);`);
 /*
 list("sequence", list_of_statements);
                     |--> list(function, application, literal) // statements
